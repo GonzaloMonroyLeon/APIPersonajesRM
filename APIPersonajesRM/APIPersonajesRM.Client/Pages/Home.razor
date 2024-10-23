@@ -1,0 +1,70 @@
+﻿@page "/"
+@inject HttpClient client
+@using APIPersonajesRM.Shared.Models
+@using Newtonsoft.Json
+@using MudBlazor
+
+
+<h1>Personajes de Rick And Morty</h1>
+
+
+
+@if (characters is null)
+{
+	<p>empty</p>
+}
+else if (characters.results.Count == 0)
+{
+	<p>No Hay Datos</p>
+}
+else
+{
+
+	<MudGrid>
+    @foreach (var character in characters.results)
+    {
+        <MudItem xs="12" sm="6" md="4" class="ml-3"> <!-- Ajusta el tamaño según tus necesidades -->
+            <MudCard>
+                <MudImage src="@character.image" alt="No image" />
+                <MudCardContent>
+                    <MudText Typo="Typo.body1" FontWeight="FontWeight.Bold">@character.name</MudText>
+                    <MudText Typo="Typo.body2">@character.origin.name</MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    }
+</MudGrid>
+}
+
+@code {
+	public Characters characters { get; set; } = null;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Getcharacters();
+		await base.OnInitializedAsync();
+	}
+
+	private async Task Getcharacters()
+	{
+		try
+		{
+			var response = await client.GetAsync("https://rickandmortyapi.com/api/character"); // Asegúrate de tener la URL correcta
+
+			if (response.IsSuccessStatusCode)
+			{
+				string responseBody = await response.Content.ReadAsStringAsync();
+				characters = JsonConvert.DeserializeObject<Characters>(responseBody);
+				StateHasChanged(); // Actualiza la interfaz de usuario
+			}
+			else
+			{
+				Console.WriteLine("Error en la solicitud: " + response.StatusCode);
+			}
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine("Excepción al obtener personajes: " + ex.Message);
+		}
+	}
+}
