@@ -16,5 +16,6 @@ System.net.http 4.3.4
 - Gonzalo Monroy
 ## Consumo de la api
 Imagen donde se evidencia  el consumo de la api y su  respectiva ejecucion 
-<img width="960" alt="RM" src="https://github.com/user-attachments/assets/b44fc388-b552-4fb9-b3bd-2336c5733180">
 
+
+<img width="960" alt="RM" src="https://github.com/user-attachments/assets/a0ea808d-7bf3-42a3-976e-9aa722fa5789">
